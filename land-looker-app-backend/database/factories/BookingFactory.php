@@ -16,7 +16,7 @@ class BookingFactory extends Factory
         return [
             'property_id' => Property::factory(),
             'buyer_id' => User::factory()->state(['user_type' => 'buyer']),
-            'seller_id' => User::factory()->state(['user_type' => 'seller']),
+            'worker_id' => User::factory()->state(['user_type' => 'worker']),
             'booking_date' => $this->faker->dateTimeBetween('2025-01-01', '2025-12-31')->format('Y-m-d'),
             'status' => $this->faker->randomElement(['pending', 'confirmed', 'cancelled']),
             'total_price' => $this->faker->randomFloat(2, 100000, 1000000),

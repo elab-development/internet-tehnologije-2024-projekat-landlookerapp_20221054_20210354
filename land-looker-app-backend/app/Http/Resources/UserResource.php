@@ -20,7 +20,7 @@ class UserResource extends JsonResource
             'address' => $this->address,
             'user_type' => $this->user_type,
             'bookings_as_buyer' => $this->whenLoaded('bookingsAsBuyer'),
-            'bookings_as_seller' => $this->whenLoaded('bookingsAsSeller'),
+            'bookings_as_worker' => $this->whenLoaded('bookingsAsWorker'),
         ];
     }
 }

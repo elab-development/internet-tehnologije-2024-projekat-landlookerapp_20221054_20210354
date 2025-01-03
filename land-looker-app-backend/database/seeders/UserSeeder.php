@@ -11,6 +11,6 @@ class UserSeeder extends Seeder
     {
 
         User::factory()->count(10)->create(['user_type' => 'buyer']);
-        User::factory()->count(10)->create(['user_type' => 'seller']);
+        User::factory()->count(10)->create(['user_type' => 'worker']);
     }
 }

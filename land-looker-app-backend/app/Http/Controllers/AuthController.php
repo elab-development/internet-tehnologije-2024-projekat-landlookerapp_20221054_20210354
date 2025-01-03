@@ -18,7 +18,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:8',
-            'user_type' => 'required|in:buyer,seller',
+            'user_type' => 'required|in:buyer,worker',
             'phone_number' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:255',
         ]);
@@ -100,10 +100,10 @@ class AuthController extends Controller
                 'logged in' => '🔑 Hello Buyer! You are now logged in and ready to explore listings.',
                 'logged out' => '👋 Goodbye Buyer! Come back soon for more property options!',
             ],
-            'seller' => [
-                'registered' => '🏠 Welcome, Seller! Your account has been created. Start listing your properties today!',
-                'logged in' => '🗝️ Hello Seller! You are now logged in to manage your listings.',
-                'logged out' => '👋 Goodbye Seller! Keep showcasing your properties for potential buyers!',
+            'worker' => [
+                'registered' => '🏠 Welcome, Worker! Your account has been created. Start listing your properties today!',
+                'logged in' => '🗝️ Hello Worker! You are now logged in to manage your listings.',
+                'logged out' => '👋 Goodbye Worker! Keep showcasing your properties for potential buyers!',
             ],
         ];
 

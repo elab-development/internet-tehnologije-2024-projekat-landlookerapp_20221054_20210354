@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('property_image');
+            $table->string('property_360_image');     
             $table->text('description')->nullable();
             $table->decimal('price', 10, 2);
             $table->integer('size');

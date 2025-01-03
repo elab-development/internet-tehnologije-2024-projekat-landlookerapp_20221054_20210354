@@ -14,6 +14,8 @@ class PropertyFactory extends Factory
     {
         return [
             'name' => $this->faker->word() . ' Property',
+            'property_image' => $this->faker->url(),
+            'property_360_image' => $this->faker->url(),
             'description' => $this->faker->sentence(),
             'price' => $this->faker->randomFloat(2, 50000, 1000000),
             'size' => $this->faker->numberBetween(50, 1000),

@@ -16,11 +16,11 @@ return new class extends Migration
             Schema::table('bookings', function (Blueprint $table) {
                 $table->unsignedBigInteger('property_id')->nullable();
                 $table->unsignedBigInteger('buyer_id')->nullable();
-                $table->unsignedBigInteger('seller_id')->nullable();
+                $table->unsignedBigInteger('worker_id')->nullable();
     
                 $table->foreign('property_id')->references('id')->on('properties')->onDelete('cascade');
                 $table->foreign('buyer_id')->references('id')->on('users')->onDelete('cascade');
-                $table->foreign('seller_id')->references('id')->on('users')->onDelete('cascade');
+                $table->foreign('worker_id')->references('id')->on('users')->onDelete('cascade');
             });
 
             Schema::table('properties', function (Blueprint $table) {
@@ -42,9 +42,9 @@ return new class extends Migration
             Schema::table('bookings', function (Blueprint $table) {
                 $table->dropForeign(['property_id']);
                 $table->dropForeign(['buyer_id']);
-                $table->dropForeign(['seller_id']);
+                $table->dropForeign(['worker_id']);
 
-                $table->dropColumn(['property_id', 'buyer_id', 'seller_id']);
+                $table->dropColumn(['property_id', 'buyer_id', 'worker_id']);
             });
 
             Schema::table('properties', function (Blueprint $table) {

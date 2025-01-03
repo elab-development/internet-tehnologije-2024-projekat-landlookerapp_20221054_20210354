@@ -13,14 +13,14 @@ class BookingSeeder extends Seeder
     {
 
         $buyers = User::where('user_type', 'buyer')->pluck('id');
-        $sellers = User::where('user_type', 'seller')->pluck('id');
+        $workers = User::where('user_type', 'worker')->pluck('id');
         $properties = Property::pluck('id');
 
 
-        Booking::factory()->count(30)->create(function () use ($buyers, $sellers, $properties) {
+        Booking::factory()->count(30)->create(function () use ($buyers, $workers, $properties) {
             return [
                 'buyer_id' => $buyers->random(),
-                'seller_id' => $sellers->random(),
+                'worker_id' => $workers->random(),
                 'property_id' => $properties->random(),
             ];
         });

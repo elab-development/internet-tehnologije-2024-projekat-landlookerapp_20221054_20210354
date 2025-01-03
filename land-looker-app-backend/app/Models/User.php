@@ -44,8 +44,8 @@ class User extends Authenticatable
         return $this->hasMany(Booking::class, 'buyer_id');
     }
 
-    public function bookingsAsSeller()
+    public function bookingsAsWorker()
     {
-        return $this->hasMany(Booking::class, 'seller_id');
+        return $this->hasMany(Booking::class, 'worker_id');
     }
 }
