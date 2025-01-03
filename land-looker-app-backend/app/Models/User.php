@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'phone_number',
+        'address',
+        'user_type',
     ];
 
     /**
@@ -44,5 +47,16 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+
+    public function bookingsAsBuyer()
+    {
+        return $this->hasMany(Booking::class, 'buyer_id');
+    }
+
+    public function bookingsAsSeller()
+    {
+        return $this->hasMany(Booking::class, 'seller_id');
     }
 }
