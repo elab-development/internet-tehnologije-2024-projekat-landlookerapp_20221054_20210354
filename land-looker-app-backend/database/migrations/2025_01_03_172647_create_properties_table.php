@@ -23,7 +23,6 @@ return new class extends Migration
             $table->integer('year_built')->nullable();
             $table->date('available_from')->nullable();
             $table->enum('status', ['available', 'sold', 'reserved'])->default('available'); 
-            $table->timestamps();
         });
     }
 
