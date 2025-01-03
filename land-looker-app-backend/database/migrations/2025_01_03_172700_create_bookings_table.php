@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-            $table->date('booking_date');
-            $table->enum('booking_status', ['pending', 'confirmed', 'cancelled'])->default('pending'); 
+            $table->date('date');
+            $table->enum('status', ['pending', 'confirmed', 'cancelled'])->default('pending'); 
             $table->decimal('total_price', 10, 2);
             $table->enum('payment_method', ['credit_card', 'bank_transfer', 'paypal'])->default('credit_card');
             $table->timestamps();
