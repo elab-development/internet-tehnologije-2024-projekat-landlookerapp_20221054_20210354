@@ -9,6 +9,8 @@ class Booking extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'property_id',
         'buyer_id',
