@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class PropertyController extends Controller
 {
     /**
-     * Display all properties (accessible to everyone).
+     * Display all properties (Accessible to everyone).
      */
     public function index()
     {
@@ -17,7 +17,44 @@ class PropertyController extends Controller
     }
 
     /**
-     * Display a single property (accessible to everyone).
+     * Search properties by name (Only buyers can search).
+     */
+    public function search(Request $request)
+    {
+        if (!auth()->check() || auth()->user()->user_type !== 'buyer') {
+            return response()->json(['error' => 'Unauthorized. Only buyers can search properties.'], 403);
+        }
+
+        $request->validate([
+            'search' => 'required|string|max:255',
+        ]);
+
+        $properties = Property::where('name', 'like', '%' . $request->input('search') . '%')->get();
+        return PropertyResource::collection($properties);
+    }
+
+    /**
+     * Sort properties by a specified field (Only buyers can sort).
+     */
+    public function sort(Request $request)
+    {
+        if (!auth()->check() || auth()->user()->user_type !== 'buyer') {
+            return response()->json(['error' => 'Unauthorized. Only buyers can sort properties.'], 403);
+        }
+
+        $request->validate([
+            'sort_by' => 'required|string|in:name,price,size,bedrooms,bathrooms',
+            'order' => 'nullable|in:asc,desc'
+        ]);
+
+        $order = $request->input('order', 'asc');
+        $properties = Property::orderBy($request->input('sort_by'), $order)->get();
+
+        return PropertyResource::collection($properties);
+    }
+
+    /**
+     * Display a single property (Accessible to everyone).
      */
     public function show($id)
     {
@@ -92,11 +129,11 @@ class PropertyController extends Controller
     public function updatePrice(Request $request, $id)
     {
         if (auth()->user()->user_type !== 'worker') {
-            return response()->json(['error' => 'Unauthorized. Only workers can update prices.'], 403);
+            return response()->json(['error' => 'Unauthorized. Only workers can update the price.'], 403);
         }
 
         $request->validate([
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|min:0',
         ]);
 
         $property = Property::findOrFail($id);

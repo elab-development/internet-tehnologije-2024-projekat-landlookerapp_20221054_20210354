@@ -11,10 +11,13 @@ Route::get('properties/{id}', [PropertyController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
 
-    Route::post('properties', [PropertyController::class, 'store']); 
-    Route::put('properties/{id}', [PropertyController::class, 'update']); 
     Route::patch('properties/{id}/price', [PropertyController::class, 'updatePrice']); 
-    Route::delete('properties/{id}', [PropertyController::class, 'destroy']);
+    Route::get('properties/search', [PropertyController::class, 'search']);
+    Route::get('properties/sort', [PropertyController::class, 'sort']);
+    
+    Route::resource('properties', PropertyController::class)->only([
+        'store', 'update', 'destroy'
+    ]);
 
     Route::get('bookings', [BookingController::class, 'index']); 
     Route::get('bookings/{id}', [BookingController::class, 'show']); 
@@ -22,6 +25,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('bookings/{id}', [BookingController::class, 'update']); 
     Route::delete('bookings/{id}', [BookingController::class, 'destroy']); 
     Route::get('bookings/export/csv', [BookingController::class, 'export']);
+
+    Route::get('booking-statistics', [BookingController::class, 'bookingStatistics']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
 });
