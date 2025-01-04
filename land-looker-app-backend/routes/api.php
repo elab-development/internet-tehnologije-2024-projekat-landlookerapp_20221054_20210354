@@ -12,8 +12,8 @@ Route::get('properties/{id}', [PropertyController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::patch('properties/{id}/price', [PropertyController::class, 'updatePrice']); 
-    Route::get('properties/search', [PropertyController::class, 'search']);
-    Route::get('properties/sort', [PropertyController::class, 'sort']);
+    Route::post('properties/search', [PropertyController::class, 'search']);
+    Route::post('properties/sort', [PropertyController::class, 'sort']);
     
     Route::resource('properties', PropertyController::class)->only([
         'store', 'update', 'destroy'
