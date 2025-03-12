@@ -687,3 +687,27 @@
   margin-top: 30px;
 }
 
+/* In your AboutUs.css */
+.quote-of-day {
+  margin-top: 40px;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.quote-of-day h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #ff8c00;
+}
+
+.quote-of-day blockquote {
+  font-style: italic;
+  margin: 0;
+}
+
+.quote-of-day footer {
+  margin-top: 10px;
+  font-weight: bold;
+}
