@@ -9,6 +9,7 @@ import {
   FaLeaf,
   FaRobot,
 } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import useQuote from "../hooks/useQuote"; // Import the custom hook
 
 const images = [
@@ -95,6 +96,9 @@ const AboutUs = () => {
 
       {/* Main Content */}
       <div className="about-content">
+      <div style={{fontSize:"20px", marginBottom:"30px"}}>
+        <Link style={{color:"#ff8c00", fontWeight:"bold"}} to="/">Main</Link> &gt; <span style={{fontWeight:"bold"}}>About Us</span>
+      </div>
         <h1>About LandLooker</h1>
         <p>Connecting people with their dream properties since 2010.</p>
 

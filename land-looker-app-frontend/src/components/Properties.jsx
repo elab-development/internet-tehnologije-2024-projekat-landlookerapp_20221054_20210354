@@ -1,7 +1,7 @@
 import React from "react";
 import useProperties from "../hooks/useProperties";
 import Button from "../components/Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const Properties = () => {
   const {
@@ -22,6 +22,9 @@ const Properties = () => {
 
   return (
     <div className="properties-container">
+        <div style={{fontSize:"20px", marginBottom:"30px"}}>
+          <Link style={{color:"#ff8c00", fontWeight:"bold"}} to="/">Main</Link> &gt; <span style={{fontWeight:"bold"}}>Properties</span>
+        </div>
       <h1>Our Properties</h1>
 
       {/* Search & Filters */}

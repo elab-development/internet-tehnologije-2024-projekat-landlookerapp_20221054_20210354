@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import usePropertyInfo from "../hooks/usePropertyInfo";
 import Button from "./Button";
 
@@ -14,6 +14,9 @@ const PropertyInfo = () => {
 
   return (
     <div className="property-info-container">
+      <div style={{fontSize:"20px", marginBottom:"30px", marginTop:"15px"}}>
+        <Link style={{color:"#ff8c00", fontWeight:"bold"}} to="/">Main</Link> &gt; <Link style={{color:"#ff8c00", fontWeight:"bold"}} to="/properties">Properties</Link> &gt; <span style={{fontWeight:"bold"}}>Property Information</span>
+      </div>
       <h1>Property Information</h1>
 
       {/* Top section: Main property image + status */}
