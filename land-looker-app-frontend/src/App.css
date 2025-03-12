@@ -36,7 +36,7 @@
 }
 
 /* Slideshow Background */
-.slideshow {
+.slideshow1 {
   position: absolute;
   top: 0;
   left: 0;
@@ -45,7 +45,7 @@
   overflow: hidden;
 }
 
-.slide {
+.slide1 {
   position: absolute;
   top: 0;
   left: 0;
@@ -57,7 +57,7 @@
   transition: opacity 1.5s ease-in-out;
 }
 
-.slide.active {
+.slide1.active {
   opacity: 1;
 }
 
@@ -387,4 +387,182 @@
 .pagination button:disabled {
   background: #ccc;
   cursor: not-allowed;
+}
+
+/* Container */
+.about-container {
+  position: relative;
+  min-height: 100vh;
+  color: white;
+  text-align: center;
+  overflow: hidden;
+  padding: 50px 20px;
+  margin-top: 50px;
+}
+
+/* Background Slideshow */
+.slideshow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+.slide.active {
+  opacity: 1;
+}
+
+/* About Content */
+.about-content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+}
+.about-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+.about-content p {
+  font-size: 1.2rem;
+  margin-bottom: 3rem;
+}
+
+/* TIMELINE (Horizontal Roadmap) */
+.timeline {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin: 0 auto 50px;
+  width: 100%;
+  max-width: 800px;
+  padding: 0 20px;
+}
+
+/* The gradient "roadmap" line */
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 35px; /* halfway through icon size */
+  left: 5%;
+  right: 5%;
+  height: 6px;
+  background: linear-gradient(to right, #0a58ca, #ff8c00);
+  z-index: 0;
+  border-radius: 3px;
+}
+
+/* Each milestone container */
+.timeline-item {
+  position: relative;
+  text-align: center;
+  width: 22%;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Circle icons on the timeline */
+.timeline-icon {
+  width: 60px;
+  height: 60px;
+  background: #ffffff;
+  color: #0a58ca;
+  border: 4px solid #0a58ca;
+  border-radius: 50%;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  z-index: 2;
+}
+
+/* Info box for each milestone */
+.timeline-info {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+}
+.timeline-info h2 {
+  font-size: 1.2rem;
+  color: #ff8c00;
+  margin-bottom: 5px;
+}
+.timeline-info p {
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Company Values & Goals */
+.company-values, .company-goals {
+  margin-top: 40px;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 5px;
+}
+.company-values h2, .company-goals h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  color: #ff8c00;
+}
+.company-values ul, .company-goals ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.company-values li, .company-goals li {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+.icon {
+  font-size: 1.5rem;
+  color: #0a58ca;
+  margin-right: 10px;
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 768px) {
+  .timeline {
+    flex-direction: column;
+    align-items: center;
+  }
+  .timeline::before {
+    top: auto;
+    left: 50%;
+    right: auto;
+    height: 90%;
+    width: 6px;
+    transform: translateX(-50%);
+    background: linear-gradient(to bottom, #0a58ca, #ff8c00);
+  }
+  .timeline-item {
+    width: 100%;
+    margin-bottom: 40px;
+  }
+  .timeline-icon {
+    margin-bottom: 10px;
+  }
 }

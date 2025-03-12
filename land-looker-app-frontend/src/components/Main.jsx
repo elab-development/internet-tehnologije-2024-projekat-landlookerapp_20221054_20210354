@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "./Button"; // Importujemo Button komponentu
+import Button from "./Button";
 
 const images = [
-  "/assets/slider1.jpg",
-  "/assets/slider2.jpg",
-  "/assets/slider3.jpg",
+  `/assets/slider1.jpg`,
+  `/assets/slider2.jpg`,
+  `/assets/slider3.jpg`,
 ];
 
 const Main = () => {
@@ -37,7 +37,7 @@ const Main = () => {
 
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 5000); // Change image every 5 seconds
+    }, 2000); // Change image every 2 seconds
 
     return () => clearInterval(interval);
   }, [loaded]);
@@ -45,11 +45,11 @@ const Main = () => {
   return (
     <main className="main-container">
       <section className="hero">
-        <div className="slideshow">
+        <div className="slideshow1">
           {images.map((src, index) => (
             <div
               key={index}
-              className={`slide ${index === currentImageIndex ? "active" : ""}`}
+              className={`slide1 ${index === currentImageIndex ? "active" : ""}`}
               style={{ backgroundImage: `url(${src})` }}
             ></div>
           ))}
@@ -57,7 +57,15 @@ const Main = () => {
         <div className="hero-content">
           <h1>Welcome to LandLooker</h1>
           <p>Find your dream property with ease.</p>
-          <div className="buttons-container" style={{justifyContent:"center", justifyItems:"center", alignContent:"center", alignItems:"center"}}>
+          <div
+            className="buttons-container"
+            style={{
+              justifyContent: "center",
+              justifyItems: "center",
+              alignContent: "center",
+              alignItems: "center",
+            }}
+          >
             <Button text="Our Properties" onClick={() => navigate("/properties")} />
             <Button text="Learn More" onClick={() => navigate("/aboutus")} />
           </div>
