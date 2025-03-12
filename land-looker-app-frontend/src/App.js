@@ -5,6 +5,7 @@ import Main from "./components/Main";
 import Footer from "./components/Footer";
 import Properties from "./components/Properties";
 import Aboutus from "./components/Aboutus";
+import PropertyInfo from "./components/PropertyInfo";
 
 import "./App.css";
 
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/properties" element={<Properties/>} />
+        <Route path="/property/:id" element={<PropertyInfo />} />
         <Route path="/about" element={<Aboutus/>} />
       </Routes>
       <Footer />

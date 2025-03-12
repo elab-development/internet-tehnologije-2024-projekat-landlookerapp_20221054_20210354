@@ -1,6 +1,7 @@
 import React from "react";
 import useProperties from "../hooks/useProperties";
 import Button from "../components/Button";
+import { useNavigate } from "react-router-dom";
 
 const Properties = () => {
   const {
@@ -16,6 +17,8 @@ const Properties = () => {
     setCurrentPage,
     totalPages,
   } = useProperties();
+
+  const navigate = useNavigate();
 
   return (
     <div className="properties-container">
@@ -70,7 +73,7 @@ const Properties = () => {
                   <p><strong>Price:</strong> ${property.price}</p>
                   <p><strong>Type:</strong> {property.property_type}</p>
                   <p style={{marginBottom:"20px"}}><strong>Available From:</strong> {property.available_from}</p>
-                  <Button text="View Details" onClick={() => alert(`Viewing ${property.name}`)} />
+                  <Button text="View Details" onClick={() => navigate(`/property/${property.id}`)} />
                 </div>
               </div>
             ))

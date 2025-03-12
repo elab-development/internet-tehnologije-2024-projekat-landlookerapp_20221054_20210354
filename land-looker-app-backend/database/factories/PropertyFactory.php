@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Property;
 use App\Models\Location;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\File; 
 
 class PropertyFactory extends Factory
 {
@@ -12,10 +13,12 @@ class PropertyFactory extends Factory
 
     public function definition(): array
     {
+        $files = File::files(public_path('images'));
+        $random360File = $this->faker->randomElement($files);
         return [
             'name' => $this->faker->word() . ' Property',
             'property_image' => "https://picsum.photos/400/300?random=" . rand(1, 1000),
-            'property_360_image' => "https://picsum.photos/400/300?random=" . rand(1001, 2000),
+            'property_360_image' => 'images/' . $random360File->getFilename(),
             'description' => $this->faker->sentence(),
             'price' => $this->faker->randomFloat(2, 50000, 1000000),
             'size' => $this->faker->numberBetween(50, 1000),
