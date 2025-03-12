@@ -1,3 +1,4 @@
+// src/components/AboutUs.js
 import React, { useState, useEffect } from "react";
 import {
   FaBuilding,
@@ -6,8 +7,9 @@ import {
   FaLightbulb,
   FaRegHandshake,
   FaLeaf,
-  FaRobot
+  FaRobot,
 } from "react-icons/fa";
+import useQuote from "../hooks/useQuote"; // Import the custom hook
 
 const images = [
   "/assets/slider4.jpg",
@@ -75,6 +77,9 @@ const AboutUs = () => {
     },
   ];
 
+  // Use the custom hook to fetch the quote
+  const { quote, loading: quoteLoading, error: quoteError } = useQuote();
+
   return (
     <div className="about-container">
       {/* Background Slider */}
@@ -99,7 +104,9 @@ const AboutUs = () => {
             <div className="timeline-item" key={index}>
               <div className="timeline-icon">{item.icon}</div>
               <div className="timeline-info">
-                <h2>{item.year} - {item.title}</h2>
+                <h2>
+                  {item.year} - {item.title}
+                </h2>
                 <p>{item.desc}</p>
               </div>
             </div>
@@ -111,19 +118,19 @@ const AboutUs = () => {
           <h2>Our Values</h2>
           <ul>
             <li>
-              <FaRegHandshake className="icon" /> 
+              <FaRegHandshake className="icon" />
               Customer-Centric - We prioritize finding the perfect home.
             </li>
             <li>
-              <FaLightbulb className="icon" /> 
+              <FaLightbulb className="icon" />
               Transparency - Clear and honest property listings.
             </li>
             <li>
-              <FaRobot className="icon" /> 
+              <FaRobot className="icon" />
               Innovation - AI-driven solutions for real estate.
             </li>
             <li>
-              <FaLeaf className="icon" /> 
+              <FaLeaf className="icon" />
               Sustainability - Supporting eco-friendly housing.
             </li>
           </ul>
@@ -135,18 +142,33 @@ const AboutUs = () => {
           <p>By 2030, LandLooker aims to:</p>
           <ul>
             <li>
-              <FaGlobe className="icon" /> 
+              <FaGlobe className="icon" />
               Become the #1 global real estate platform.
             </li>
             <li>
-              <FaLightbulb className="icon" /> 
+              <FaLightbulb className="icon" />
               Provide AI-powered property insights.
             </li>
             <li>
-              <FaRocket className="icon" /> 
+              <FaRocket className="icon" />
               Expand into smart home technology.
             </li>
           </ul>
+        </div>
+
+        {/* Quote of the Day */}
+        <div className="quote-of-day">
+          <h2>Quote of the Day</h2>
+          {quoteLoading ? (
+            <p>Loading quote...</p>
+          ) : quoteError ? (
+            <p>Error: {quoteError}</p>
+          ) : quote ? (
+            <blockquote>
+              <p>"{quote.quote}"</p>
+              <footer>- {quote.author}</footer>
+            </blockquote>
+          ) : null}
         </div>
       </div>
     </div>
