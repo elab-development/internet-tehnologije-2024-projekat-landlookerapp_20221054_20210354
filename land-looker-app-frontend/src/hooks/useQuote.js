@@ -1,4 +1,3 @@
-// src/hooks/useQuote.js
 import { useState, useEffect } from "react";
 
 const useQuote = () => {
@@ -10,7 +9,6 @@ const useQuote = () => {
     const fetchQuote = async () => {
       try {
         setLoading(true);
-        // DummyJSON docs indicate there are 150 quotes available.
         const randomIndex = Math.floor(Math.random() * 150);
         const response = await fetch(
           `https://dummyjson.com/quotes?limit=1&skip=${randomIndex}`
@@ -19,7 +17,6 @@ const useQuote = () => {
           throw new Error("Failed to fetch quote");
         }
         const data = await response.json();
-        // data.quotes should be an array with one quote object
         if (data && data.quotes && data.quotes.length > 0) {
           setQuote(data.quotes[0]);
         }

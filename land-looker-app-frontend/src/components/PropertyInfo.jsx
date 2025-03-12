@@ -19,7 +19,6 @@ const PropertyInfo = () => {
       </div>
       <h1>Property Information</h1>
 
-      {/* Top section: Main property image + status */}
       <div className="top-section">
         <div className="property-image">
           <img 
@@ -30,7 +29,6 @@ const PropertyInfo = () => {
         </div>
       </div>
 
-      {/* Details section: Name, description, type, price */}
       <div className="details-section">
         <div className="basic-info">
           <h2>{property.name}</h2>
@@ -46,7 +44,6 @@ const PropertyInfo = () => {
           </div>
         </div>
 
-        {/* Extra details row: year, bedrooms, bathrooms, size, available from */}
         <div className="row">
           <div className="col">
             <strong>Year Built:</strong> {property.year_built}
@@ -66,7 +63,6 @@ const PropertyInfo = () => {
         </div>
       </div>
 
-      {/* 360 Image section */}
       <div className="image-360-section">
       <h2>360 image</h2>
         <img 
@@ -75,7 +71,6 @@ const PropertyInfo = () => {
         />
       </div>
 
-      {/* Bottom buttons */}
       <div className="buttons-container">
         <Button text="Book Now" onClick={() => alert("Booking...")} />
         <Button text="Go Back" onClick={() => navigate(-1)} />

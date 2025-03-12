@@ -1,4 +1,3 @@
-// src/components/AboutUs.js
 import React, { useState, useEffect } from "react";
 import {
   FaBuilding,
@@ -10,7 +9,7 @@ import {
   FaRobot,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import useQuote from "../hooks/useQuote"; // Import the custom hook
+import useQuote from "../hooks/useQuote"; 
 
 const images = [
   "/assets/slider4.jpg",
@@ -26,7 +25,6 @@ const AboutUs = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loaded, setLoaded] = useState(false);
 
-  // Preload slider images
   useEffect(() => {
     let loadedImages = 0;
     images.forEach((src) => {
@@ -41,7 +39,6 @@ const AboutUs = () => {
     });
   }, []);
 
-  // Auto-advance slider every 5 seconds
   useEffect(() => {
     if (!loaded) return;
     const interval = setInterval(() => {
@@ -50,7 +47,6 @@ const AboutUs = () => {
     return () => clearInterval(interval);
   }, [loaded]);
 
-  // Timeline data
   const timelineData = [
     {
       year: "2010",
@@ -78,12 +74,10 @@ const AboutUs = () => {
     },
   ];
 
-  // Use the custom hook to fetch the quote
   const { quote, loading: quoteLoading, error: quoteError } = useQuote();
 
   return (
     <div className="about-container">
-      {/* Background Slider */}
       <div className="slideshow">
         {images.map((src, i) => (
           <div
@@ -94,7 +88,6 @@ const AboutUs = () => {
         ))}
       </div>
 
-      {/* Main Content */}
       <div className="about-content">
       <div style={{fontSize:"20px", marginBottom:"30px"}}>
         <Link style={{color:"#ff8c00", fontWeight:"bold"}} to="/">Main</Link> &gt; <span style={{fontWeight:"bold"}}>About Us</span>
@@ -102,7 +95,6 @@ const AboutUs = () => {
         <h1>About LandLooker</h1>
         <p>Connecting people with their dream properties since 2010.</p>
 
-        {/* Horizontal Timeline */}
         <div className="timeline">
           {timelineData.map((item, index) => (
             <div className="timeline-item" key={index}>
@@ -117,7 +109,6 @@ const AboutUs = () => {
           ))}
         </div>
 
-        {/* Company Values */}
         <div className="company-values">
           <h2>Our Values</h2>
           <ul>
@@ -140,7 +131,6 @@ const AboutUs = () => {
           </ul>
         </div>
 
-        {/* Company Goals */}
         <div className="company-goals">
           <h2>Our Goals</h2>
           <p>By 2030, LandLooker aims to:</p>
@@ -160,7 +150,6 @@ const AboutUs = () => {
           </ul>
         </div>
 
-        {/* Quote of the Day */}
         <div className="quote-of-day">
           <h2>Quote of the Day</h2>
           {quoteLoading ? (

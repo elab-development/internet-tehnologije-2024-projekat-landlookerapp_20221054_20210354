@@ -27,7 +27,6 @@ const Properties = () => {
         </div>
       <h1>Our Properties</h1>
 
-      {/* Search & Filters */}
       <div className="filters">
         <input
           type="text"
@@ -58,7 +57,6 @@ const Properties = () => {
         </select>
       </div>
 
-      {/* Property Cards */}
       {loading ? (
         <p className="loading">Loading properties...</p>
       ) : (
@@ -86,7 +84,6 @@ const Properties = () => {
         </div>
       )}
 
-      {/* Pagination using Reusable Button */}
       {totalPages > 1 && (
         <div className="pagination">
           <Button

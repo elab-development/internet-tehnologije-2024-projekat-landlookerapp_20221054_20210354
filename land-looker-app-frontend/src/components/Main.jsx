@@ -13,7 +13,6 @@ const Main = () => {
   const [loaded, setLoaded] = useState(false);
   const navigate = useNavigate();
 
-  // Preload images
   useEffect(() => {
     const preloadImages = () => {
       let loadedImages = 0;
@@ -37,7 +36,7 @@ const Main = () => {
 
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 4000); // Change image every 2 seconds
+    }, 4000); 
 
     return () => clearInterval(interval);
   }, [loaded]);

@@ -25,7 +25,6 @@ const useProperties = () => {
     }
   };
 
-  // Apply filters and sorting
   const filteredProperties = properties
     .filter((property) =>
       property.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -35,7 +34,6 @@ const useProperties = () => {
     )
     .sort((a, b) => (sortOrder === "asc" ? a.price - b.price : b.price - a.price));
 
-  // Pagination
   const totalPages = Math.ceil(filteredProperties.length / propertiesPerPage);
   const paginatedProperties = filteredProperties.slice(
     (currentPage - 1) * propertiesPerPage,
