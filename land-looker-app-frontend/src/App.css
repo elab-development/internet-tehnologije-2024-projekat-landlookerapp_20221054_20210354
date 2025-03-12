@@ -253,3 +253,40 @@
   width: 0 !important; /* Prevents underline effect */
 }
 
+/* Footer Styles */
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 50px;
+  background: var(--dark-blue);
+  color: white;
+  font-size: 1rem;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer-center {
+  flex: 1;
+  margin-left: 550px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Move Support to the Right */
+.footer-right {
+  flex: 1;
+  text-align: right;
+}
+
+.footer-right a {
+  color: var(--accent-orange);
+  text-decoration: none;
+  transition: color 0.3s ease-in-out;
+}
+
+.footer-right a:hover {
+  color: #ffb366;
+}
+
