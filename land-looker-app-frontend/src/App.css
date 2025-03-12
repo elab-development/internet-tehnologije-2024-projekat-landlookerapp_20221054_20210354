@@ -163,3 +163,93 @@
 .custom-button:last-child:hover {
   background-color: var(--dark-gray);
 }
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 50px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+/* Logo Container */
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 50px;
+  margin-right: 10px;
+}
+
+.site-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #0a58ca;
+}
+
+/* Navigation Links */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+}
+
+.nav-links li {
+  display: inline-block;
+}
+
+.nav-links a {
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #032f6b;
+  padding: 8px 15px;
+  position: relative;
+  transition: color 0.3s ease-in-out;
+}
+
+/* Unique Hover Animation */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 3px;
+  background: #ff8c00;
+  bottom: -5px;
+  left: 50%;
+  transition: all 0.3s ease-in-out;
+  transform: translateX(-50%);
+}
+
+.nav-links a:hover {
+  color: #ff8c00;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* Active Link Styling - Disable Clickable & Remove Hover */
+.nav-links .active {
+  color: #ff8c00;
+  font-weight: bold;
+  pointer-events: none; /* Disables clicking */
+  cursor: default; /* Changes cursor to indicate it's not clickable */
+  text-decoration: none; /* Removes underline if any */
+}
+
+/* Remove Hover Effect for Active Link */
+.nav-links .active::after {
+  width: 0 !important; /* Prevents underline effect */
+}
+

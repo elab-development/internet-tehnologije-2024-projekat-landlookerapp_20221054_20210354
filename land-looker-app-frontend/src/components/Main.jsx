@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "./Button"; // Importujemo Button komponentu
 
 const images = [
@@ -10,6 +11,7 @@ const images = [
 const Main = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loaded, setLoaded] = useState(false);
+  const navigate = useNavigate();
 
   // Preload images
   useEffect(() => {
@@ -56,8 +58,8 @@ const Main = () => {
           <h1>Welcome to LandLooker</h1>
           <p>Find your dream property with ease.</p>
           <div className="buttons-container" style={{justifyContent:"center", justifyItems:"center", alignContent:"center", alignItems:"center"}}>
-            <Button text="Our Properties" onClick={() => alert("Navigating to properties...")} />
-            <Button text="Learn More" onClick={() => alert("More information...")} />
+            <Button text="Our Properties" onClick={() => navigate("/properties")} />
+            <Button text="Learn More" onClick={() => navigate("/aboutus")} />
           </div>
         </div>
       </section>
