@@ -66,7 +66,7 @@ const Main = () => {
             }}
           >
             <Button text="Our Properties" onClick={() => navigate("/properties")} />
-            <Button text="Learn More" onClick={() => navigate("/aboutus")} />
+            <Button text="Learn More" onClick={() => navigate("/about")} />
           </div>
         </div>
       </section>
