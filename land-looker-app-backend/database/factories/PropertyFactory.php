@@ -18,7 +18,7 @@ class PropertyFactory extends Factory
         return [
             'name' => $this->faker->word() . ' Property',
             'property_image' => "https://picsum.photos/400/300?random=" . rand(1, 1000),
-            'property_360_image' => 'images/' . $random360File->getFilename(),
+            'property_360_image' => 'http://127.0.0.1:8000/images/' . $random360File->getFilename(),
             'description' => $this->faker->sentence(),
             'price' => $this->faker->randomFloat(2, 50000, 1000000),
             'size' => $this->faker->numberBetween(50, 1000),
