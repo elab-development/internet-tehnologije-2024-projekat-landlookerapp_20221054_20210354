@@ -13,39 +13,41 @@ const Login = () => {
 
   const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    if (loading) return;
-    setLoading(true);
-    setError("");
+const handleLogin = async (e) => {
+  e.preventDefault();
+  if (loading) return;
+  setLoading(true);
+  setError("");
 
-    try {
-      const res = await axios.post("/api/login", {
-        email: form.email,
-        password: form.password,
-      });
+  try {
+    const res = await axios.post("/api/login", {
+      email: form.email,
+      password: form.password,
+    });
 
-      const data = res?.data ?? {};
-      const token = data.token || data.access_token || data?.data?.token;
-      const user = data.user || data.data?.user || data.data || { email: form.email };
+    const data = res?.data ?? {};
+    const token = data.token || data.access_token || data?.data?.token;
+    const user  = data.user || data.data?.user || data.data || { email: form.email };
 
-      if (token) {
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        sessionStorage.setItem("authToken", token);
-      }
-      sessionStorage.setItem("user", JSON.stringify(user));
-
-      navigate("/home", { replace: true });
-    } catch (err) {
-      const msg =
-        err?.response?.data?.message ||
-        err?.response?.data?.error ||
-        "Login failed. Check your credentials and try again.";
-      setError(msg);
-    } finally {
-      setLoading(false);
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      sessionStorage.setItem("authToken", token);
     }
-  };
+    sessionStorage.setItem("user", JSON.stringify(user));
+
+    const role = (user?.user_type || user?.role || user?.type || "").toString().toLowerCase();
+    const path = role === "worker" ? "/worker-home" : "/home";
+    navigate(path, { replace: true });
+  } catch (err) {
+    const msg =
+      err?.response?.data?.message ||
+      err?.response?.data?.error ||
+      "Login failed. Check your credentials and try again.";
+    setError(msg);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <>

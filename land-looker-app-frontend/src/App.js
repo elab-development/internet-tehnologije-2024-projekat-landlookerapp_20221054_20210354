@@ -9,6 +9,7 @@ import PropertyInfo from "./components/PropertyInfo";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import BuyerBookings from "./components/BuyerBookings";
+import WorkerMain from "./components/WokerMain";
 
 import "./App.css";
 
@@ -50,6 +51,7 @@ function App() {
         <Route path="/property/:id" element={<PropertyInfo />} />
         <Route path="/about" element={<Aboutus />} />
         <Route path="/my-bookings" element={<BuyerBookings />} />
+        <Route path="/worker-home" element={<WorkerMain />} />
       </Routes>
       {isAuthed && <Footer />}
     </Router>
