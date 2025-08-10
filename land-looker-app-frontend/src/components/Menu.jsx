@@ -9,7 +9,7 @@ const Menu = () => {
         <span className="site-title">LandLooker</span>
       </div>
       <ul className="nav-links">
-        <li><NavLink to="/" className={({ isActive }) => isActive ? "active" : ""}>Home</NavLink></li>
+        <li><NavLink to="/home" className={({ isActive }) => isActive ? "active" : ""}>Home</NavLink></li>
         <li><NavLink to="/properties" className={({ isActive }) => isActive ? "active" : ""}>Properties</NavLink></li>
         <li><NavLink to="/about" className={({ isActive }) => isActive ? "active" : ""}>About Us</NavLink></li>
       </ul>
