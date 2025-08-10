@@ -262,15 +262,32 @@ const BuyerBookings = () => {
     setEditOpen(true);
   };
 
+  const exportCsv = async () => {
+    try {
+      const token = sessionStorage.getItem("authToken");
+      const res = await axios.get(`/api/bookings/export/csv`, {
+        headers: { Authorization: token ? `Bearer ${token}` : undefined },
+        responseType: "blob",
+      });
+      const blob = new Blob([res.data], { type: "text/csv;charset=utf-8;" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `my-bookings-${new Date().toISOString().slice(0,10)}.csv`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } catch (e) {
+      alert(e?.response?.data?.message || e?.response?.data?.error || e.message || "Export failed.");
+    }
+  };
+
   const renderWorker = (b) => {
-    // Prefer relation if present; fall back to any flat fields; finally worker_id
     const name = b?.worker?.name || b?.worker_name || null;
     const email = b?.worker?.email || b?.worker_email || null;
     if (name && email) return `${name} (${email})`;
     if (name) return name;
     if (email) return email;
     return `Worker #${b?.worker_id ?? "—"}`;
-    // If you also return property->location worker name, you can add more fallbacks here.
   };
 
   const content = useMemo(() => {
@@ -356,7 +373,7 @@ const BuyerBookings = () => {
               <div><strong>Date:</strong> {fmtDate(b.booking_date)}</div>
               <div><strong>Total:</strong> ${Number(b.total_price).toFixed(2)}</div>
               <div><strong>Payment:</strong> {PAYMENT_LABELS[b.payment_method] || b.payment_method}</div>
-              <div><strong>Worker:</strong> {renderWorker(b)}</div> {/* <-- NEW */}
+              <div><strong>Worker:</strong> {renderWorker(b)}</div>
             </div>
 
             <div style={{ marginTop: 6, display: "flex", gap: 10, justifyContent: "flex-end" }}>
@@ -380,7 +397,8 @@ const BuyerBookings = () => {
         My Bookings
       </h1>
 
-      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 12 }}>
+      <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginBottom: 12 }}>
+        <Button text="Export CSV" onClick={exportCsv} />
         <Button text="Browse properties" onClick={() => navigate("/properties")} />
       </div>
 
