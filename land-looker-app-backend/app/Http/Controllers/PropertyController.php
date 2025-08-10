@@ -13,7 +13,11 @@ class PropertyController extends Controller
      */
     public function index()
     {
-        return PropertyResource::collection(Property::all());
+        $props = Property::with('location:id,city,state,country,latitude,longitude')
+            ->select('id','name','price','size','property_type','status','property_image','location_id')
+            ->get();
+
+        return PropertyResource::collection($props);
     }
 
     /**

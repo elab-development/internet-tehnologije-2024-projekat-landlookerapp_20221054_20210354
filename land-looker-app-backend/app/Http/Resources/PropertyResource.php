@@ -21,7 +21,14 @@ class PropertyResource extends JsonResource
             'bedrooms' => $this->bedrooms,
             'bathrooms' => $this->bathrooms,
             'year_built' => $this->year_built,
-            'location' => $this->whenLoaded('location'),
+            'location_id' => $this->location_id,
+            'location' => $this->whenLoaded('location', function () {
+                return [
+                    'name' => trim(($this->location->city ?? '').', '.($this->location->state ?? '').', '.($this->location->country ?? '')),
+                    'latitude' => (float) $this->location->latitude,
+                    'longitude'=> (float) $this->location->longitude,
+                ];
+            }),
             'available_from' => $this->available_from,
             'status' => $this->status,
         ];
