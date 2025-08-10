@@ -10,6 +10,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import BuyerBookings from "./components/BuyerBookings";
 import WorkerMain from "./components/WokerMain";
+import WorkerProperties from "./components/WorkerProperties";
 
 import "./App.css";
 
@@ -52,6 +53,7 @@ function App() {
         <Route path="/about" element={<Aboutus />} />
         <Route path="/my-bookings" element={<BuyerBookings />} />
         <Route path="/worker-home" element={<WorkerMain />} />
+        <Route path="/worker-properties" element={<WorkerProperties />} />
       </Routes>
       {isAuthed && <Footer />}
     </Router>
