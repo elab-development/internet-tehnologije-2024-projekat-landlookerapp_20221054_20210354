@@ -6,14 +6,15 @@ use App\Models\Booking;
 use App\Models\Property;
 use App\Http\Resources\BookingResource;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\BookingsExport;
-use Illuminate\Validation\Rule;
 
 class BookingController extends Controller
 {
     /**
-     * Display booking statistics for workers only.
+     * Booking statistics FOR THE LOGGED-IN WORKER ONLY.
+     * Returns top 5 properties by number of bookings handled by this worker.
      */
     public function bookingStatistics()
     {
@@ -21,12 +22,18 @@ class BookingController extends Controller
 
         if ($user->user_type !== 'worker') {
             return response()->json(['error' => 'Unauthorized. Only workers can view booking statistics.'], 403);
-        }
+       }
 
-        $statistics = Property::withCount('bookings')
+        // Count only bookings that this worker is assigned to
+        // Assumes Property has a `bookings()` relationship (it does, since you used withCount('bookings') earlier)
+        $statistics = Property::withCount([
+                'bookings as bookings_count' => function ($q) use ($user) {
+                    $q->where('worker_id', $user->id);
+                }
+            ])
             ->orderByDesc('bookings_count')
             ->take(5)
-            ->get();
+            ->get(['id', 'name']);
 
         return response()->json([
             'top_booked_properties' => $statistics
@@ -34,7 +41,7 @@ class BookingController extends Controller
     }
 
     /**
-     * Display all bookings for the authenticated buyer.
+     * Buyer: list their own bookings.
      */
     public function index()
     {
@@ -44,12 +51,15 @@ class BookingController extends Controller
             return response()->json(['error' => 'Unauthorized. Only buyers can view their bookings.'], 403);
         }
 
-        $bookings = Booking::with(['worker:id,name,email'])->where('buyer_id', $user->id)->get();
+        $bookings = Booking::with(['worker:id,name,email'])
+            ->where('buyer_id', $user->id)
+            ->get();
+
         return BookingResource::collection($bookings);
     }
 
     /**
-     * Show a specific booking (only for the authenticated buyer).
+     * Buyer: view one of their bookings.
      */
     public function show($id)
     {
@@ -62,8 +72,8 @@ class BookingController extends Controller
         return new BookingResource($booking);
     }
 
-        /**
-     * Create a new booking (only for buyers).
+    /**
+     * Buyer: create a booking.
      */
     public function store(Request $request)
     {
@@ -87,18 +97,19 @@ class BookingController extends Controller
 
         $booking = Booking::create([
             'property_id'    => $validated['property_id'],
-            'buyer_id'       => $user->id,                 // logged-in buyer
-            'worker_id'      => $validated['worker_id'],   // <-- chosen worker
+            'buyer_id'       => $user->id,
+            'worker_id'      => $validated['worker_id'],
             'booking_date'   => $validated['booking_date'],
             'status'         => $validated['status'],
             'total_price'    => $validated['total_price'],
             'payment_method' => $validated['payment_method'],
         ]);
+
         return new BookingResource($booking);
     }
 
     /**
-     * Update an existing booking (only for buyers).
+     * Buyer: update their own booking.
      */
     public function update(Request $request, $id)
     {
@@ -109,18 +120,19 @@ class BookingController extends Controller
         }
 
         $validated = $request->validate([
-            'booking_date' => 'sometimes|required|date',
-            'status' => 'sometimes|required|in:pending,confirmed,cancelled',
-            'total_price' => 'sometimes|required|numeric|min:0',
+            'booking_date'   => 'sometimes|required|date',
+            'status'         => 'sometimes|required|in:pending,confirmed,cancelled',
+            'total_price'    => 'sometimes|required|numeric|min:0',
             'payment_method' => 'sometimes|required|in:credit_card,bank_transfer,paypal',
         ]);
 
         $booking->update($validated);
+
         return new BookingResource($booking);
     }
 
     /**
-     * Delete a booking (only for buyers).
+     * Buyer: delete their own booking.
      */
     public function destroy($id)
     {
@@ -131,11 +143,12 @@ class BookingController extends Controller
         }
 
         $booking->delete();
+
         return response()->json(['message' => 'Booking deleted successfully.']);
     }
 
     /**
-     * Export bookings for the authenticated buyer as a CSV file.
+     * Buyer: export bookings as CSV.
      */
     public function export()
     {
@@ -146,5 +159,57 @@ class BookingController extends Controller
         }
 
         return Excel::download(new BookingsExport($user->id), 'bookings.csv');
+    }
+
+    /**
+     * NEW: Worker: list bookings where this worker is assigned.
+     */
+    public function workerIndex()
+    {
+        $user = auth()->user();
+
+        if ($user->user_type !== 'worker') {
+            return response()->json(['error' => 'Unauthorized. Only workers can view their bookings.'], 403);
+        }
+
+        $bookings = Booking::with([
+                'buyer:id,name,email',
+                'property:id,name',
+            ])
+            ->where('worker_id', $user->id)
+            ->orderByDesc('booking_date')
+            ->get();
+
+        return BookingResource::collection($bookings);
+    }
+
+    /**
+     * NEW: Worker: update ONLY the status of a booking they own.
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        $user = auth()->user();
+
+        if ($user->user_type !== 'worker') {
+            return response()->json(['error' => 'Unauthorized. Only workers can update booking status.'], 403);
+        }
+
+        $booking = Booking::findOrFail($id);
+
+        if ((int) $booking->worker_id !== (int) $user->id) {
+            return response()->json(['error' => 'Unauthorized. You can only update your own bookings.'], 403);
+        }
+
+        $validated = $request->validate([
+            'status' => 'required|in:pending,confirmed,cancelled',
+        ]);
+
+        $booking->status = $validated['status'];
+        $booking->save();
+
+        // eager-load minimal for UI
+        $booking->load(['buyer:id,name,email', 'property:id,name']);
+
+        return new BookingResource($booking);
     }
 }

@@ -31,5 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('workers', [AuthController::class, 'workers']);
     Route::get('locations', [LocationController::class, 'index']);
+    Route::get('worker-bookings',                 [BookingController::class, 'workerIndex']);
+    Route::patch('worker-bookings/{id}/status',   [BookingController::class, 'updateStatus']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
