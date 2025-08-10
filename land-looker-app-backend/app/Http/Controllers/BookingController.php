@@ -8,6 +8,7 @@ use App\Http\Resources\BookingResource;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\BookingsExport;
+use Illuminate\Validation\Rule;
 
 class BookingController extends Controller
 {
@@ -43,7 +44,7 @@ class BookingController extends Controller
             return response()->json(['error' => 'Unauthorized. Only buyers can view their bookings.'], 403);
         }
 
-        $bookings = Booking::where('buyer_id', $user->id)->get();
+        $bookings = Booking::with(['worker:id,name,email'])->where('buyer_id', $user->id)->get();
         return BookingResource::collection($bookings);
     }
 
@@ -73,23 +74,26 @@ class BookingController extends Controller
         }
 
         $validated = $request->validate([
-            'property_id' => 'required|exists:properties,id',
-            'booking_date' => 'required|date',
-            'status' => 'required|in:pending,confirmed,cancelled',
-            'total_price' => 'required|numeric|min:0',
+            'property_id'    => 'required|exists:properties,id',
+            'booking_date'   => 'required|date',
+            'status'         => 'required|in:pending,confirmed,cancelled',
+            'total_price'    => 'required|numeric|min:0',
             'payment_method' => 'required|in:credit_card,bank_transfer,paypal',
+            'worker_id'      => [
+                'required',
+                Rule::exists('users', 'id')->where('user_type', 'worker'),
+            ],
         ]);
 
         $booking = Booking::create([
-            'property_id' => $validated['property_id'],
-            'buyer_id' => $user->id,
-            'worker_id' => Property::find($validated['property_id'])->location->id,
-            'booking_date' => $validated['booking_date'],
-            'status' => $validated['status'],
-            'total_price' => $validated['total_price'],
+            'property_id'    => $validated['property_id'],
+            'buyer_id'       => $user->id,                 // logged-in buyer
+            'worker_id'      => $validated['worker_id'],   // <-- chosen worker
+            'booking_date'   => $validated['booking_date'],
+            'status'         => $validated['status'],
+            'total_price'    => $validated['total_price'],
             'payment_method' => $validated['payment_method'],
         ]);
-
         return new BookingResource($booking);
     }
 

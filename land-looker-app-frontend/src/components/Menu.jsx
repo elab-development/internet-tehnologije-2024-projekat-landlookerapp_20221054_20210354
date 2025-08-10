@@ -71,6 +71,7 @@ const Menu = () => {
         <li><NavLink to="/home" className={({ isActive }) => (isActive ? "active" : "")}>Home</NavLink></li>
         <li><NavLink to="/properties" className={({ isActive }) => (isActive ? "active" : "")}>Properties</NavLink></li>
         <li><NavLink to="/about" className={({ isActive }) => (isActive ? "active" : "")}>About Us</NavLink></li>
+        <li><NavLink to="/my-bookings" className={({ isActive }) => (isActive ? "active" : "")}>My Bookings</NavLink></li>
       </ul>
 
       <div className="user-menu" style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 12 }}>

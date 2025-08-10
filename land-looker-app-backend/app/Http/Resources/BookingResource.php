@@ -17,7 +17,10 @@ class BookingResource extends JsonResource
             'total_price' => $this->total_price,
             'payment_method' => $this->payment_method,
             'buyer' => new UserResource($this->whenLoaded('buyer')),
-            'worker' => new UserResource($this->whenLoaded('worker')),
+            'worker'   => $this->when(
+                $this->relationLoaded('worker'),
+                fn () => ['id' => $this->worker->id, 'name' => $this->worker->name]
+            ),
             'property' => new PropertyResource($this->whenLoaded('property')),
         ];
     }

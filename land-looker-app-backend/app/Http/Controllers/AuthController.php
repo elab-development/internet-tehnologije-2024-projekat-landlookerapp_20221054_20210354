@@ -109,4 +109,15 @@ class AuthController extends Controller
 
         return $messages[$role][$action] ?? 'Action completed successfully.';
     }
+
+    public function workers()
+    {
+        // return only minimal fields
+        return response()->json(
+            User::where('user_type', 'worker')
+                ->select('id', 'name', 'email')
+                ->orderBy('name')
+                ->get()
+        );
+    }
 }

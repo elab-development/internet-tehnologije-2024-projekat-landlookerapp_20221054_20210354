@@ -23,6 +23,9 @@ const BookingModal = ({ open, onClose, property }) => {
   const [status, setStatus] = useState("pending");
   const [totalPrice, setTotalPrice] = useState(property?.price ?? 0);
   const [paymentMethod, setPaymentMethod] = useState("credit_card");
+  const [workers, setWorkers] = useState([]);
+  const [workersLoading, setWorkersLoading] = useState(false);
+  const [workerId, setWorkerId] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [okMsg, setOkMsg] = useState("");
@@ -30,6 +33,29 @@ const BookingModal = ({ open, onClose, property }) => {
   const [user, setUser] = useState(() => getUserFromSession());
   const userType = getUserType(user);
   const canBook = userType === "buyer";
+
+  // Load workers list when opening
+  useEffect(() => {
+    const loadWorkers = async () => {
+      setWorkersLoading(true);
+      try {
+        const token = sessionStorage.getItem("authToken");
+        const res = await axios.get("/api/workers", {
+          headers: { Authorization: token ? `Bearer ${token}` : undefined },
+        });
+        const list = Array.isArray(res?.data) ? res.data : [];
+        setWorkers(list);
+        // preselect first worker if none selected
+        setWorkerId((cur) => cur || list[0]?.id || "");
+      } catch (_) {
+        // show a small inline error during submit if needed
+      } finally {
+        setWorkersLoading(false);
+      }
+    };
+
+    if (open) loadWorkers();
+  }, [open]);
 
   // refresh form and user every time modal opens
   useEffect(() => {
@@ -62,6 +88,10 @@ const BookingModal = ({ open, onClose, property }) => {
       setError("Only buyers can create bookings.");
       return;
     }
+    if (!workerId) {
+      setError("Please choose a worker.");
+      return;
+    }
     if (submitting) return;
 
     setSubmitting(true);
@@ -72,6 +102,7 @@ const BookingModal = ({ open, onClose, property }) => {
       const token = sessionStorage.getItem("authToken");
       const payload = {
         property_id: property.id,
+        worker_id: Number(workerId),        // <-- chosen worker
         booking_date: bookingDate,
         status,
         total_price: Number(totalPrice) || 0,
@@ -134,6 +165,9 @@ const BookingModal = ({ open, onClose, property }) => {
             <div style={{ opacity: 0.8, fontSize: 14 }}>
               {property?.name ? `Property: ${property.name}` : "Select options below"}
             </div>
+            <div style={{ opacity: 0.7, fontSize: 12, marginTop: 4 }}>
+              Buyer: <strong>{user?.name || user?.email || "—"}</strong>
+            </div>
           </div>
           <button
             type="button"
@@ -192,6 +226,34 @@ const BookingModal = ({ open, onClose, property }) => {
             {okMsg}
           </div>
         )}
+
+        {/* Worker select */}
+        <label htmlFor="worker_id" style={{ display: "block", marginBottom: 6, fontWeight: 500 }}>
+          Worker
+        </label>
+        <select
+          id="worker_id"
+          value={workerId}
+          onChange={(e) => setWorkerId(e.target.value)}
+          required
+          className="auth-input"
+          style={{
+            width: "100%",
+            padding: "12px 14px",
+            borderRadius: 10,
+            border: "1px solid #e6e6e6",
+            outline: "none",
+            marginBottom: 12,
+            background: "#fff",
+          }}
+        >
+          {!workersLoading && !workers.length && <option value="">No workers available</option>}
+          {workers.map((w) => (
+            <option key={w.id} value={w.id}>
+              {w.name || w.email} (#{w.id})
+            </option>
+          ))}
+        </select>
 
         <label htmlFor="booking_date" style={{ display: "block", marginBottom: 6, fontWeight: 500 }}>
           Booking date
