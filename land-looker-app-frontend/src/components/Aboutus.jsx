@@ -90,7 +90,7 @@ const AboutUs = () => {
 
       <div className="about-content">
       <div style={{fontSize:"20px", marginBottom:"30px"}}>
-        <Link style={{color:"#ff8c00", fontWeight:"bold"}} to="/">Main</Link> / <span style={{fontWeight:"bold"}}>About Us</span>
+        <Link style={{color:"#ff8c00", fontWeight:"bold"}} to="/home">Main</Link> / <span style={{fontWeight:"bold"}}>About Us</span>
       </div>
         <h1>About LandLooker</h1>
         <p>Connecting people with their dream properties since 2010.</p>

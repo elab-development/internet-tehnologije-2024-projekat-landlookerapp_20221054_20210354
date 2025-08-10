@@ -15,20 +15,19 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (loading) return; // guard against double submits
+    if (loading) return;
     setLoading(true);
     setError("");
 
     try {
-      const res = await axios.post("http://127.0.0.1:8000/api/login", {
+      const res = await axios.post("/api/login", {
         email: form.email,
         password: form.password,
       });
 
       const data = res?.data ?? {};
       const token = data.token || data.access_token || data?.data?.token;
-      const user =
-        data.user || data.data?.user || data.data || { email: form.email };
+      const user = data.user || data.data?.user || data.data || { email: form.email };
 
       if (token) {
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -79,35 +78,14 @@ const Login = () => {
             padding: 28,
           }}
         >
-          {/* Logo */}
           <div style={{ display: "flex", justifyContent: "center", marginBottom: 12 }}>
-            <img
-              src="/assets/logo.png"
-              alt="Landlooker logo"
-              style={{ height: 56, width: "auto", objectFit: "contain" }}
-              loading="eager"
-            />
+            <img src="/assets/logo.png" alt="Landlooker logo" style={{ height: 56, width: "auto", objectFit: "contain" }} />
           </div>
 
-          <h1
-            className="auth-title"
-            style={{
-              fontSize: "1.75rem",
-              marginBottom: 8,
-              color: "var(--dark-gray)",
-              textAlign: "center",
-            }}
-          >
+          <h1 className="auth-title" style={{ fontSize: "1.75rem", marginBottom: 8, color: "var(--dark-gray)", textAlign: "center" }}>
             Welcome back
           </h1>
-          <p
-            style={{
-              textAlign: "center",
-              marginBottom: 22,
-              color: "var(--dark-gray)",
-              opacity: 0.8,
-            }}
-          >
+          <p style={{ textAlign: "center", marginBottom: 22, color: "var(--dark-gray)", opacity: 0.8 }}>
             Sign in to continue
           </p>
 
@@ -128,15 +106,7 @@ const Login = () => {
             </div>
           ) : null}
 
-          <label
-            htmlFor="email"
-            style={{
-              display: "block",
-              marginBottom: 6,
-              color: "var(--dark-gray)",
-              fontWeight: 500,
-            }}
-          >
+          <label htmlFor="email" style={{ display: "block", marginBottom: 6, color: "var(--dark-gray)", fontWeight: 500 }}>
             Email
           </label>
           <input
@@ -148,25 +118,10 @@ const Login = () => {
             onChange={onChange}
             placeholder="you@example.com"
             className="auth-input"
-            style={{
-              width: "100%",
-              padding: "12px 14px",
-              borderRadius: 10,
-              border: "1px solid #e6e6e6",
-              outline: "none",
-              marginBottom: 14,
-            }}
+            style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1px solid #e6e6e6", outline: "none", marginBottom: 14 }}
           />
 
-          <label
-            htmlFor="password"
-            style={{
-              display: "block",
-              marginBottom: 6,
-              color: "var(--dark-gray)",
-              fontWeight: 500,
-            }}
-          >
+          <label htmlFor="password" style={{ display: "block", marginBottom: 6, color: "var(--dark-gray)", fontWeight: 500 }}>
             Password
           </label>
           <input
@@ -178,31 +133,11 @@ const Login = () => {
             onChange={onChange}
             placeholder="Your password"
             className="auth-input"
-            style={{
-              width: "100%",
-              padding: "12px 14px",
-              borderRadius: 10,
-              border: "1px solid #e6e6e6",
-              outline: "none",
-              marginBottom: 20,
-            }}
+            style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1px solid #e6e6e6", outline: "none", marginBottom: 20 }}
           />
 
-          <div
-            className="auth-actions"
-            style={{
-              display: "flex",
-              gap: 12,
-              justifyContent: "space-between",
-              marginTop: 8,
-            }}
-          >
-            {/* If your Button forwards the "type" prop, this will submit the form */}
-            <Button
-              text={loading ? "Logging in..." : "Login"}
-              disabled={loading}
-              onClick={handleLogin}
-            />
+          <div className="auth-actions" style={{ display: "flex", gap: 12, justifyContent: "space-between", marginTop: 8 }}>
+            <Button text={loading ? "Logging in..." : "Login"} disabled={loading} onClick={handleLogin} />
             <Button text="Register" onClick={() => navigate("/register")} />
           </div>
         </form>

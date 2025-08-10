@@ -23,7 +23,7 @@ const Properties = () => {
   return (
     <div className="properties-container">
         <div style={{fontSize:"20px", marginBottom:"30px"}}>
-          <Link style={{color:"#ff8c00", fontWeight:"bold"}} to="/">Main</Link> / <span style={{fontWeight:"bold"}}>Properties</span>
+          <Link style={{color:"#ff8c00", fontWeight:"bold"}} to="/home">Main</Link> / <span style={{fontWeight:"bold"}}>Properties</span>
         </div>
       <h1>Our Properties</h1>
 

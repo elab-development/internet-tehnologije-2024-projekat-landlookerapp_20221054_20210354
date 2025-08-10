@@ -1,5 +1,16 @@
+// src/hooks/useProperties.js
 import { useState, useEffect } from "react";
 import axios from "axios";
+
+const toRelative = (url) => {
+  if (!url) return url;
+  try {
+    const u = new URL(url);
+    return u.pathname + u.search;
+  } catch {
+    return url; // already relative
+  }
+};
 
 const useProperties = () => {
   const [properties, setProperties] = useState([]);
@@ -11,23 +22,31 @@ const useProperties = () => {
   const propertiesPerPage = 8;
 
   useEffect(() => {
+    const controller = new AbortController();
+    const fetchProperties = async () => {
+      try {
+        const res = await axios.get("/api/properties", { signal: controller.signal });
+        const list = Array.isArray(res?.data?.data) ? res.data.data : [];
+        // normalize any absolute URLs -> relative (works with the proxy)
+        const normalized = list.map((p) => ({
+          ...p,
+          property_image: p.property_image,
+          property_360_image: toRelative(p.property_360_image),
+        }));
+        setProperties(normalized);
+      } catch (error) {
+        console.error("Error fetching properties:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchProperties();
+    return () => controller.abort();
   }, []);
-
-  const fetchProperties = async () => {
-    try {
-      const response = await axios.get("http://127.0.0.1:8000/api/properties");
-      setProperties(response.data.data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching properties:", error);
-      setLoading(false);
-    }
-  };
 
   const filteredProperties = properties
     .filter((property) =>
-      property.name.toLowerCase().includes(searchQuery.toLowerCase())
+      (property.name || "").toLowerCase().includes(searchQuery.toLowerCase())
     )
     .filter((property) =>
       propertyTypeFilter ? property.property_type === propertyTypeFilter : true

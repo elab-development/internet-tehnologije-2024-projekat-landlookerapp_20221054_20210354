@@ -19,7 +19,6 @@ const Menu = () => {
   const [user, setUser] = useState(parseUser());
   const [loggingOut, setLoggingOut] = useState(false);
 
-  // keep in sync if storage changes
   useEffect(() => {
     const onStorage = (e) => {
       if (e.key === "user" || e.key === "authToken") setUser(parseUser());
@@ -38,9 +37,7 @@ const Menu = () => {
     return (parts[0]?.[0] || "").toUpperCase() + (parts[1]?.[0] || "").toUpperCase();
   }, [user]);
 
-  const role = useMemo(() => {
-    return (user?.user_type || user?.role || user?.type || "—").toString();
-  }, [user]);
+  const role = useMemo(() => (user?.user_type || user?.role || user?.type || "—").toString(), [user]);
 
   const onLogout = async () => {
     if (loggingOut) return;
@@ -49,16 +46,12 @@ const Menu = () => {
     const token = sessionStorage.getItem("authToken");
     try {
       await axios.post(
-        "http://127.0.0.1:8000/api/logout",
+        "/api/logout",
         null,
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : undefined,
-          },
-        }
+        { headers: { Authorization: token ? `Bearer ${token}` : undefined } }
       );
-    } catch (e) {
-      // ignore API errors on logout; still clear client session
+    } catch (_) {
+      // ignore API errors on logout
     } finally {
       sessionStorage.removeItem("authToken");
       sessionStorage.removeItem("user");
@@ -80,49 +73,19 @@ const Menu = () => {
         <li><NavLink to="/about" className={({ isActive }) => (isActive ? "active" : "")}>About Us</NavLink></li>
       </ul>
 
-      {/* Right side user panel */}
-      <div
-        className="user-menu"
-        style={{
-          marginLeft: "auto",
-          display: "flex",
-          alignItems: "center",
-          gap: 12,
-        }}
-      >
-        {/* Avatar with initials */}
-        <div
-          className="avatar"
-          aria-label="User avatar"
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: "50%",
-            display: "grid",
-            placeItems: "center",
-            fontWeight: 700,
-            background: "var(--dark-gray, #2c3e50)",
-            color: "#fff",
-            userSelect: "none",
-          }}
-        >
+      <div className="user-menu" style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 12 }}>
+        <div className="avatar" aria-label="User avatar" style={{ width: 40, height: 40, borderRadius: "50%", display: "grid", placeItems: "center", fontWeight: 700, background: "var(--dark-gray, #2c3e50)", color: "#fff", userSelect: "none" }}>
           {initials}
         </div>
 
-        {/* Text block */}
         <div className="user-text" style={{ lineHeight: 1.2, textAlign: "right" }}>
           <div style={{ fontSize: 12, opacity: 0.7 }}>Currently logged in</div>
           <div style={{ fontWeight: 600 }}>{user?.name || user?.full_name || user?.email || "User"}</div>
           <div style={{ fontSize: 12, opacity: 0.8, textTransform: "capitalize" }}>{role}</div>
         </div>
 
-        {/* Logout button */}
         <div>
-          <Button
-            text={loggingOut ? "Logging out..." : "Logout"}
-            disabled={loggingOut}
-            onClick={onLogout}
-          />
+          <Button text={loggingOut ? "Logging out..." : "Logout"} disabled={loggingOut} onClick={onLogout} />
         </div>
       </div>
     </nav>
