@@ -1,8 +1,10 @@
-import React from "react";
+// src/components/PropertyInfo.jsx
+import React, { useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import usePropertyInfo from "../hooks/usePropertyInfo";
 import Button from "./Button";
 import Panorama360 from "./Panorama360";
+import BookingModal from "./BookingModal";
 
 // helper: turn absolute http://127.0.0.1:8000/images/xyz.jpg into "/images/xyz.jpg"
 const toSameOrigin = (url) => {
@@ -19,20 +21,21 @@ const PropertyInfo = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { property, loading, error } = usePropertyInfo(id);
+  const [openBooking, setOpenBooking] = useState(false);
 
   if (loading) return <p className="loading-text">Loading property info...</p>;
   if (error) return <p className="error-text">Error: {error}</p>;
   if (!property) return <p className="error-text">No property found.</p>;
 
   const coverSrc = property.property_image;
-  const panoSrc  = toSameOrigin(property.property_360_image);
+  const panoSrc = toSameOrigin(property.property_360_image);
 
   return (
     <div className="property-info-container">
-      <div style={{fontSize:"20px", marginBottom:"30px", marginTop:"15px"}}>
-        <Link style={{color:"#ff8c00", fontWeight:"bold"}} to="/home">Main</Link> /{" "}
-        <Link style={{color:"#ff8c00", fontWeight:"bold"}} to="/properties">Properties</Link> /{" "}
-        <span style={{fontWeight:"bold"}}>Property Information</span>
+      <div style={{ fontSize: "20px", marginBottom: "30px", marginTop: "15px" }}>
+        <Link style={{ color: "#ff8c00", fontWeight: "bold" }} to="/home">Main</Link> /{" "}
+        <Link style={{ color: "#ff8c00", fontWeight: "bold" }} to="/properties">Properties</Link> /{" "}
+        <span style={{ fontWeight: "bold" }}>Property Information</span>
       </div>
       <h1>Property Information</h1>
 
@@ -73,9 +76,16 @@ const PropertyInfo = () => {
       </div>
 
       <div className="buttons-container">
-        <Button text="Book Now" onClick={() => alert("Booking...")} />
+        <Button text="Book Now" onClick={() => setOpenBooking(true)} />
         <Button text="Go Back" onClick={() => navigate(-1)} />
       </div>
+
+      {/* Booking Modal */}
+      <BookingModal
+        open={openBooking}
+        onClose={() => setOpenBooking(false)}
+        property={property}
+      />
     </div>
   );
 };
